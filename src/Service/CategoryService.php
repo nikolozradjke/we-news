@@ -15,17 +15,12 @@ class CategoryService
         private CategoryRepository $repo,
     ) {}
 
-    public function listPaginated(int $page = 1, int $limit = 10): Paginator
-    {
-        return $this->repo->findAllOrderedPaginated($page, $limit);
-    }
-
     public function create(CategoryDto $dto): Category
     {
         return $this->save(new Category(), $dto);
     }
 
-    public function update(Category $category, CategoryDto $dto): ?Category
+    public function update(Category $category, CategoryDto $dto): Category
     {
         return $this->save($category, $dto);
     }

@@ -17,15 +17,7 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
-    public function findAllOrdered(): array
-    {
-        return $this->createQueryBuilder('c')
-            ->orderBy('c.createdAt', 'DESC')
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function findAllOrderedPaginated(int $page = 1, int $limit = 10): Paginator
+    public function listPaginated(int $page = 1, int $limit = 10): Paginator
     {
         $query = $this->createQueryBuilder('c')
             ->orderBy('c.createdAt', 'DESC')
