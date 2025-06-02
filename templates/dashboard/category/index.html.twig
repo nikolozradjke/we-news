@@ -27,7 +27,7 @@
                 </tr>
             </thead>
             <tbody>
-            {% for category in categories %}
+            {% for category in items %}
                 <tr>
                     <td>{{ loop.index }}</td>
                     <td>{{ category.title }}</td>
@@ -36,7 +36,7 @@
                         <a href="{{ path('category_edit', {category: category.id}) }}" class="btn btn-sm btn-warning">Edit</a>
 
                         <form method="post" action="{{ path('category_delete', {category: category.id}) }}" style="display:inline-block" onsubmit="return confirm('Are you sure?');">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete_category_' ~ category.id) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('category_delete_' ~ category.id) }}">
                             <button class="btn btn-sm btn-danger">Delete</button>
                         </form>
                     </td>

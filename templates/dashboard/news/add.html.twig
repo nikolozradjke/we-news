@@ -1,6 +1,6 @@
 {%extends 'layouts/admin.html.twig' %}
 
-{% block title %}Index{% endblock %}
+{% block title %}Add{% endblock %}
 
 {% block body %}
     <div class="container mt-4">
@@ -21,7 +21,7 @@
             {{ form_row(form.categories) }}
 
             <div class="mt-4">
-                <button type="submit" class="btn btn-primary">{{ is_edit ? 'Update' : 'Create' }}</button>
+                <button type="submit" class="btn btn-primary">Create</button>
                 <a href="{{ path('news_index') }}" class="btn btn-secondary ms-2">Back to List</a>
             </div>
 

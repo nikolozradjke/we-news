@@ -16,7 +16,7 @@ class NewsRepository extends ServiceEntityRepository
         parent::__construct($registry, News::class);
     }
 
-    public function findPaginated(int $page, int $limit): array
+    public function listPaginated(int $page = 1, int $limit = 10): array
     {
         return $this->createQueryBuilder('n')
             ->setFirstResult(($page - 1) * $limit)

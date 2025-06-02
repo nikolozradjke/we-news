@@ -60,14 +60,8 @@ class NewsService
         return $news;
     }
 
-    public function remove($id)
+    public function remove(News $news)
     {
-        $news = $this->repo->find($id);
-
-        if (!$news) {
-            return false;
-        }
-
         $this->em->remove($news);
         $this->em->flush();
 

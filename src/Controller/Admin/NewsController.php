@@ -2,91 +2,79 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\Admin\Base\AdminBaseController;
+use App\Controller\Admin\Base\CrudController;
 use App\Dto\NewsDto;
 use App\Entity\News;
 use App\Form\NewsTypeForm;
 use App\Repository\NewsRepository;
 use App\Service\NewsService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
-use App\Enum\UserRole;
 
-#[Route('/admin/news')]
-#[IsGranted(UserRole::ADMIN->value)]
-final class NewsController extends AbstractController
+#[Route(AdminBaseController::PATH . '/news')]
+final class NewsController extends CrudController
 {
-    #[Route('/', name: 'news_index')]
-    public function index(NewsRepository $repo, Request $request): Response
-    {
-        $page = max(1, $request->query->getInt('page', 1));
-        $limit = 10;
-        $newsList = $repo->findPaginated($page, 10);
-        $totalItems = count($newsList);
-        $totalPages = ceil($totalItems / $limit);
+    private const ROUTE_PREFIX = 'news';
+    private const TEMPLATE_DIR = 'dashboard/news';
 
-        return $this->render('dashboard/news/index.html.twig', [
-            'newsList' => $newsList,
-            'currentPage' => $page,
-            'totalPages' => $totalPages,
-        ]);
+    #[Route('/', name: self::ROUTE_PREFIX . '_index')]
+    public function index(NewsRepository $repo, Request $request)
+    {
+        return $this->renderIndex(
+            $request,
+            fn($page, $limit) => $repo->listPaginated($page, $limit),
+            self::TEMPLATE_DIR . '/index.html.twig'
+        );
     }
 
-    #[Route('/create', name: 'news_create')]
+    #[Route('/create', name: self::ROUTE_PREFIX . '_create')]
     public function create(Request $request, NewsService $service): Response
     {
         $dto = new NewsDto();
         $form = $this->createForm(NewsTypeForm::class, $dto);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $service->create($dto);
-            return $this->redirectToRoute('news_index');
-        }
-
-        return $this->render('dashboard/news/add.html.twig', [
-            'form' => $form->createView(),
-            'title' => 'Create News',
-            'is_edit' => false,
-        ]);
+        return $this->handleForm(
+            $request,
+            $form,
+            fn() => $service->create($dto),
+            self::TEMPLATE_DIR . '/add.html.twig',
+            ['redirectTo' => $this->generateUrl(self::ROUTE_PREFIX . '_index')]
+        );
     }
 
-    #[Route('/edit/{news}', name: 'news_edit')]
-    public function edit(News $news, Request $request, NewsRepository $newsRepository, NewsService $service): Response
+    #[Route('/edit/{news}', name: self::ROUTE_PREFIX . '_edit')]
+    public function edit(News $news, Request $request, NewsService $service): Response
     {
         $dto = new NewsDto();
         $dto->title = $news->getTitle();
         $dto->shortDescription = $news->getShortDescription();
         $dto->content = $news->getContent();
         $dto->categories = $news->getCategories()->toArray();
-
         $form = $this->createForm(NewsTypeForm::class, $dto);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $service->update($news, $dto);
             $this->addFlash('success', 'News updated successfully.');
-            return $this->redirectToRoute('news_index');
+            return $this->redirectToRoute(self::ROUTE_PREFIX . '_index');
         }
 
-        return $this->render('dashboard/news/edit.html.twig', [
+        return $this->render(self::TEMPLATE_DIR . '/edit.html.twig', [
             'form' => $form->createView(),
-            'title' => 'Edit News',
-            'news' => $news,
-            'is_edit' => true,
+            'news' => $news
         ]);
     }
 
-    #[Route('/delete/{news}', name: 'news_delete', methods: ['POST'])]
+    #[Route('/delete/{news}', name: self::ROUTE_PREFIX . '_delete', methods: ['POST'])]
     public function delete(News $news, Request $request, NewsService $service): Response
     {
-        if ($this->isCsrfTokenValid('delete_news_' . $news->getId(), $request->request->get('_token'))) {
-            $service->remove($news);
-            $this->addFlash('success', 'News deleted.');
-        }
-
-        return $this->redirectToRoute('news_index');
+        return $this->handleDelete(
+            $request,
+            self::ROUTE_PREFIX . '_delete_' . $news->getId(),
+            fn() => $service->remove($news),
+            self::ROUTE_PREFIX . '_index'
+        );
     }
 }
