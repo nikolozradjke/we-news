@@ -1,0 +1,26 @@
+{%extends 'layouts/admin.html.twig' %}
+
+{% block title %}Edit{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h2>Create New Category</h2>
+
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">{{ message }}</div>
+            {% endfor %}
+        {% endfor %}
+
+        {{ form_start(form) }}
+            <div class="mb-3">
+                {{ form_label(form.title) }}
+                {{ form_widget(form.title) }}
+                {{ form_errors(form.title) }}
+            </div>
+
+            <button type="submit" class="btn btn-success">Edit</button>
+            <a href="{{ path('category_index') }}" class="btn btn-secondary">Back to List</a>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

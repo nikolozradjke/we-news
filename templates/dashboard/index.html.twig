@@ -9,7 +9,6 @@
         <p>Welcome back, {{ app.user.name }}!</p>
 
         <div class="row">
-            <!-- Categories Module -->
             <div class="col-md-6 mb-4">
                 <div class="card h-100">
                     <div class="card-header bg-primary text-white">
@@ -19,14 +18,13 @@
                     </div>
                     <div class="card-body">
                         <ul class="list-unstyled">
-                            <li><a href=""><i class="fas fa-plus text-success"></i></a> Create new categories</li>
-                            <li><a href=""><i class="fas fa-list text-info"></i></a> View all categories</li>
+                            <li><a href="{{ path('category_create') }}" class="text-decoration-none"><i class="fas fa-plus text-success"></i> Create new categories</li></a> 
+                            <li><a href="{{ path('category_index') }}" class="text-decoration-none"><i class="fas fa-list text-info"></i> View all categories</li></a>
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <!-- News Module -->
             <div class="col-md-6 mb-4">
                 <div class="card h-100">
                     <div class="card-header bg-success text-white">
@@ -36,8 +34,8 @@
                     </div>
                     <div class="card-body">
                         <ul class="list-unstyled">
-                            <li><a href=""><i class="fas fa-plus text-success"></i></a> Create new article</li>
-                            <li><a href=""><i class="fas fa-list text-info"></i></a> View all articles</li>
+                            <li><a href="" class="text-decoration-none"><i class="fas fa-plus text-success"></i> Create new article</li></a> 
+                            <li><a href="" class="text-decoration-none"><i class="fas fa-list text-info"></i> View all articles</li></a>
                         </ul>
                     </div>
                 </div>
