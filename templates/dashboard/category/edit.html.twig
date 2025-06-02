@@ -4,8 +4,6 @@
 
 {% block body %}
     <div class="container mt-4">
-        <h2>Create New Category</h2>
-
         {% for label, messages in app.flashes %}
             {% for message in messages %}
                 <div class="alert alert-{{ label }}">{{ message }}</div>

@@ -1,0 +1,32 @@
+{%extends 'layouts/admin.html.twig' %}
+
+{% block title %}Edit{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">{{ message }}</div>
+            {% endfor %}
+        {% endfor %}
+
+        {{ form_start(form) }}
+            {{ form_row(form.title) }}
+            {{ form_row(form.shortDescription) }}
+            {{ form_row(form.content) }}
+
+            {% if news.picture %}
+                <div>
+                    <label>Current Picture</label><br>
+                    <img src="{{ asset(news.picture) }}" alt="Current Picture" style="max-height: 200px;">
+                </div>
+            {% endif %}
+
+            {{ form_row(form.picture) }}
+            {{ form_row(form.categories) }}
+
+            <button type="submit" class="btn btn-success">Edit</button>
+            <a href="{{ path('news_index') }}" class="btn btn-secondary">Back to List</a>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

@@ -1,6 +1,6 @@
 {%extends 'layouts/admin.html.twig' %}
 
-{% block title %}Category{% endblock %}
+{% block title %}News{% endblock %}
 
 {% block body %}
 
@@ -13,8 +13,8 @@
             {% endfor %}
         {% endfor %}
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2>Category List</h2>
-            <a href="{{ path('category_create') }}" class="btn btn-primary">+ Add New</a>
+            <h2>News List</h2>
+            <a href="{{ path('news_create') }}" class="btn btn-primary">+ Add New</a>
         </div>
 
         <table class="table table-bordered table-striped">
@@ -27,37 +27,37 @@
                 </tr>
             </thead>
             <tbody>
-            {% for category in categories %}
+            {% for news in newsList %}
                 <tr>
                     <td>{{ loop.index }}</td>
-                    <td>{{ category.title }}</td>
-                    <td>{{ category.createdAt|date('Y-m-d H:i') }}</td>
+                    <td>{{ news.title }}</td>
+                    <td>{{ news.createdAt|date('Y-m-d H:i') }}</td>
                     <td>
-                        <a href="{{ path('category_edit', {category: category.id}) }}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="{{ path('news_edit', {news: news.id}) }}" class="btn btn-sm btn-warning">Edit</a>
 
-                        <form method="post" action="{{ path('category_delete', {category: category.id}) }}" style="display:inline-block" onsubmit="return confirm('Are you sure?');">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete_category_' ~ category.id) }}">
+                        <form method="post" action="{{ path('news_delete', {news: news.id}) }}" style="display:inline-block" onsubmit="return confirm('Are you sure?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete_news_' ~ news.id) }}">
                             <button class="btn btn-sm btn-danger">Delete</button>
                         </form>
                     </td>
                 </tr>
             {% else %}
-                <tr><td colspan="5" class="text-center">No categories found.</td></tr>
+                <tr><td colspan="5" class="text-center">No news found.</td></tr>
             {% endfor %}
             </tbody>
         </table>
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
                 <li class="page-item {% if currentPage == 1 %}disabled{% endif %}">
-                    <a class="page-link" href="{{ path('category_index', {'page': currentPage - 1}) }}" tabindex="-1">Previous</a>
+                    <a class="page-link" href="{{ path('news_index', {'page': currentPage - 1}) }}" tabindex="-1">Previous</a>
                 </li>
                 {% for page in 1..totalPages %}
                     <li class="page-item {% if page == currentPage %}active{% endif %}">
-                        <a class="page-link" href="{{ path('category_index', {'page': page}) }}">{{ page }}</a>
+                        <a class="page-link" href="{{ path('news_index', {'page': page}) }}">{{ page }}</a>
                     </li>
                 {% endfor %}
                 <li class="page-item {% if currentPage == totalPages %}disabled{% endif %}">
-                    <a class="page-link" href="{{ path('category_index', {'page': currentPage + 1}) }}">Next</a>
+                    <a class="page-link" href="{{ path('news_index', {'page': currentPage + 1}) }}">Next</a>
                 </li>
             </ul>
         </nav>

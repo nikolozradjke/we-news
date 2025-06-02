@@ -15,12 +15,30 @@ class CategoryService
         private CategoryRepository $repo,
     ) {}
 
+    public function listPaginated(int $page = 1, int $limit = 10): Paginator
+    {
+        return $this->repo->findAllOrderedPaginated($page, $limit);
+    }
+
     public function create(CategoryDto $dto): Category
     {
-        $category = new Category();
-        $category->setTitle($dto->title);
-        $category->setCreatedAt(new \DateTimeImmutable());
-        $category->setUpdatedAt(new \DateTimeImmutable());
+        return $this->save(new Category(), $dto);
+    }
+
+    public function update(Category $category, CategoryDto $dto): ?Category
+    {
+        return $this->save($category, $dto);
+    }
+
+    private function save(Category $category, CategoryDto $dto): Category
+    {
+        $isNew = $category->getId() === null;
+        $category->setTitle($dto->title)
+            ->setUpdatedAt(new \DateTimeImmutable());
+
+        if ($isNew) {
+            $category->setCreatedAt(new \DateTimeImmutable());
+        }
 
         $this->em->persist($category);
         $this->em->flush();
@@ -28,43 +46,11 @@ class CategoryService
         return $category;
     }
 
-    public function listPaginated(int $page = 1, int $limit = 10): Paginator
+    public function remove(Category $category): bool
     {
-        return $this->repo->findAllOrderedPaginated($page, $limit);
-    }
-
-    public function update(int $id, CategoryDto $dto): ?Category
-    {
-        $category = $this->repo->find($id);
-
-        if (!$category) {
-            return null;
-        }
-
-        $category->setTitle($dto->title);
-        $category->setUpdatedAt(new \DateTimeImmutable());
-
-        $this->em->flush();
-
-        return $category;
-    }
-
-    public function remove(int $id): bool
-    {
-        $category = $this->repo->find($id);
-
-        if (!$category) {
-            return false;
-        }
-
         $this->em->remove($category);
         $this->em->flush();
 
         return true;
-    }
-
-    public function getById(int $id): ?Category
-    {
-        return $this->repo->find($id);
     }
 }
