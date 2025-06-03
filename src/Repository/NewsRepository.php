@@ -25,5 +25,16 @@ class NewsRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findWithCategories(int $id): ?News
+    {
+        return $this->createQueryBuilder('n')
+            ->leftJoin('n.categories', 'c')
+            ->addSelect('c')
+            ->where('n.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
     
 }

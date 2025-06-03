@@ -1,0 +1,64 @@
+{% extends 'layouts/public.html.twig' %}
+
+{% block title %}{{ news.title }}{% endblock %}
+{% block stylesheets %}<link rel="stylesheet" href="{{ asset('css/inner_news.css') }}">{% endblock %}
+
+{% block body %}
+    <article class="article-container">
+            <!-- Article Header -->
+            <header class="article-header">
+                <h1 class="article-title">{{ news.title }}</h1>
+                
+                <!-- Article Meta Information -->
+                <div class="article-meta">
+                    <div class="meta-item">
+                        <strong>Published:</strong> {{ news.createdAt|date('F j, Y') }}
+                    </div>
+                </div>
+
+                <!-- Category Buttons -->
+                <div class="category-buttons">
+                    {% for category in categories %}
+                    <a href="" class="category-btn">{{ category.title }}</a>
+                    {% endfor %}
+                </div>
+            </header>
+
+            <img src="{{ asset(news.picture) }}" alt="{{ news.title }}" class="article-image">
+
+            <div class="article-content">
+                {{ news.content }}
+            </div>
+        </article>
+
+        <section class="comments-section">
+            <h2 class="comments-title">Comments</h2>
+
+            <form class="comment-form">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="comment">Comment</label>
+                    <textarea id="comment" name="comment" placeholder="Share your thoughts..." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Post Comment</button>
+            </form>
+
+            <div class="comments-list">
+                <div class="comment">
+                    <div class="comment-header">
+                        <span class="comment-author">Tech Enthusiast</span>
+                        <span class="comment-date">4 hours ago</span>
+                    </div>
+                    <p class="comment-text">The future is here! Can't wait to see how this technology evolves and becomes integrated into our daily lives. The possibilities seem endless.</p>
+                    <button class="reply-btn">Reply</button>
+                </div>
+            </div>
+        </section>
+{% endblock %}
