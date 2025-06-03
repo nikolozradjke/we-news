@@ -2,8 +2,12 @@
 
 namespace App\Controller\Public;
 
+use App\Dto\CommentDto;
+use App\Form\CommentTypeForm;
 use App\Repository\NewsRepository;
+use App\Service\CommentService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -11,16 +15,43 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 final class NewsController extends AbstractController
 {
     #[Route('/news/{id}', name: 'app_public_news')]
-    public function inner($id, NewsRepository $repo): Response
+    public function inner($id, NewsRepository $repo, Request $request, CommentService $commentService): Response
     {
         $news = $repo->findWithCategories($id);
         if (!$news) {
             throw new NotFoundHttpException('News not found');
         }
 
+        $dto = new CommentDto();
+        $form = $this->createForm(CommentTypeForm::class, $dto);
+        $form->handleRequest($request);
+
+        if ($request->isXmlHttpRequest()) {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $comment = $commentService->saveComment($news, $dto);
+                return $this->json([
+                    'status' => 'success',
+                    'name' => $comment->getName(),
+                    'email' => $comment->getEmail(),
+                    'content' => $comment->getContent(),
+                    'createdAt' => $comment->getCreatedAt()->format('Y-m-d H:i')
+                ]);
+            }
+
+            $errors = [];
+            foreach ($form->getErrors(true) as $error) {
+                $field = $error->getOrigin()->getName();
+                $errors[] = ucfirst($field) . ': ' . $error->getMessage();
+            }
+
+            return $this->json(['status' => 'error', 'errors' => $errors], 400);
+        }
+
         return $this->render('public/news/inner.html.twig', [
             'news' => $news,
-            'categories' => $news->getCategories()
+            'categories' => $news->getCategories(),
+            'comments' => $news->getComments(),
+            'commentForm' => $form->createView()
         ]);
     }
 }

@@ -33,32 +33,40 @@
 
         <section class="comments-section">
             <h2 class="comments-title">Comments</h2>
-
-            <form class="comment-form">
+                <div id="comment-errors" class="comment-errors"></div>
+                {{ form_start(commentForm, {'attr': {'class': 'comment-form'}}) }}
                 <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required>
+                    {{ form_widget(commentForm.name, {'attr': {'id': 'name'}}) }}
                 </div>
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
+                    {{ form_widget(commentForm.email, {'attr': {'id': 'email'}}) }}
                 </div>
                 <div class="form-group">
-                    <label for="comment">Comment</label>
-                    <textarea id="comment" name="comment" placeholder="Share your thoughts..." required></textarea>
+                    {{ form_widget(commentForm.content, {'attr': {'id': 'comment'}}) }}
                 </div>
                 <button type="submit" class="submit-btn">Post Comment</button>
+                {{ form_end(commentForm) }}
             </form>
 
             <div class="comments-list">
+                {% for comment in comments %}
                 <div class="comment">
                     <div class="comment-header">
-                        <span class="comment-author">Tech Enthusiast</span>
-                        <span class="comment-date">4 hours ago</span>
+                        <span class="comment-author">{{ comment.name }}</span>
+                        <span class="comment-author">{{ comment.email }}</span>
+                        <span class="comment-date">{{ comment.createdAt|date('Y-m-d H:i') }}</span>
                     </div>
-                    <p class="comment-text">The future is here! Can't wait to see how this technology evolves and becomes integrated into our daily lives. The possibilities seem endless.</p>
-                    <button class="reply-btn">Reply</button>
+                    <p class="comment-text">{{ comment.content }}</p>
                 </div>
+                {% else %}
+                <div class="comment" id="no-comments">
+                    <p class="comment-text">No comments yet.</p>
+                </div>
+                {% endfor %}
             </div>
         </section>
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{ asset('js/comments.js') }}"></script>
 {% endblock %}
