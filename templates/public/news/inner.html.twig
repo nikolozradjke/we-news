@@ -50,11 +50,14 @@
 
             <div class="comments-list">
                 {% for comment in comments %}
-                <div class="comment">
+                <div class="comment" data-id="{{ comment.id }}">
                     <div class="comment-header">
                         <span class="comment-author">{{ comment.name }}</span>
                         <span class="comment-author">{{ comment.email }}</span>
                         <span class="comment-date">{{ comment.createdAt|date('Y-m-d H:i') }}</span>
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <button class="delete-comment-btn submit-btn" data-id="{{ comment.id }}">Delete</button>
+                        {% endif %}
                     </div>
                     <p class="comment-text">{{ comment.content }}</p>
                 </div>
