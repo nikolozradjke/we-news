@@ -2,9 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\Category;
 use App\Entity\News;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * @extends ServiceEntityRepository<News>
@@ -16,25 +18,18 @@ class NewsRepository extends ServiceEntityRepository
         parent::__construct($registry, News::class);
     }
 
-    public function listPaginated(int $page = 1, int $limit = 10): array
+    public function listPaginated(Category $category = null)
     {
-        return $this->createQueryBuilder('n')
-            ->setFirstResult(($page - 1) * $limit)
-            ->setMaxResults($limit)
-            ->orderBy('n.id', 'DESC')
-            ->getQuery()
-            ->getResult();
-    }
+        $qb = $this->createQueryBuilder('n')
+            ->orderBy('n.id', 'DESC');
+            
+        if ($category){
+            $qb->join('n.categories', 'c')
+            ->where('c.id = :categoryId')
+            ->setParameter('categoryId', $category->getId());
+        }
 
-    public function findWithCategories(int $id): ?News
-    {
-        return $this->createQueryBuilder('n')
-            ->leftJoin('n.categories', 'c')
-            ->addSelect('c')
-            ->where('n.id = :id')
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getOneOrNullResult();
+        return $qb->getQuery()->getResult();
     }
     
 }

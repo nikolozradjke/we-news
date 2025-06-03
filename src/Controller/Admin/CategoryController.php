@@ -11,6 +11,7 @@ use App\Service\CategoryService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CategoryRepository;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route(AdminBaseController::PATH . '/categories')]
 final class CategoryController extends CrudController
@@ -19,12 +20,14 @@ final class CategoryController extends CrudController
     private const TEMPLATE_DIR = 'dashboard/category';
     
     #[Route('/', name: self::ROUTE_PREFIX . '_index')]
-    public function index(Request $request, CategoryRepository $repo)
+    public function index(Request $request, CategoryRepository $repo, PaginatorInterface $paginator)
     {
         return $this->renderIndex(
             $request,
-            fn($page, $limit) => $repo->listPaginated($page, $limit),
-            self::TEMPLATE_DIR . '/index.html.twig'
+            fn() => $repo->listPaginated(),
+            self::TEMPLATE_DIR . '/index.html.twig',
+            $paginator,
+            $perPage = 10
         );
     }
 

@@ -1,43 +1,5 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    color: #333;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    min-height: 100vh;
-}
-
 .container {
     max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-header {
-    text-align: center;
-    margin-bottom: 30px;
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-
-.logo {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #2c3e50;
-    margin-bottom: 10px;
-}
-
-.tagline {
-    color: #666;
-    font-size: 1.1rem;
-    font-weight: 300;
 }
 
 .breadcrumb {
@@ -71,7 +33,6 @@ header {
     margin-bottom: 30px;
 }
 
-
 .article-header {
     margin-bottom: 30px;
 }
@@ -104,43 +65,6 @@ header {
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 30px;
-}
-
-.category-btn {
-    background: linear-gradient(45deg, #667eea, #764ba2);
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.category-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-}
-
-.category-btn.sports {
-    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-}
-
-.category-btn.business {
-    background: linear-gradient(45deg, #2ed573, #1e90ff);
-}
-
-.category-btn.entertainment {
-    background: linear-gradient(45deg, #ffa726, #ff7043);
-}
-
-.category-btn.health {
-    background: linear-gradient(45deg, #26c6da, #00acc1);
-}
-
-.category-btn.world {
-    background: linear-gradient(45deg, #ab47bc, #8e24aa);
 }
 
 .article-image {
@@ -177,6 +101,27 @@ header {
     margin-bottom: 12px;
 }
 
+.share-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.share-title {
+    font-size: 1.2rem;
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.share-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
 .comments-section {
     background: white;
     border-radius: 20px;
@@ -201,37 +146,8 @@ header {
     border: 1px solid #e9ecef;
 }
 
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 600;
-    color: #2c3e50;
-}
-
-.form-group input,
-.form-group textarea {
-    width: 100%;
-    padding: 12px 15px;
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-family: inherit;
-    transition: border-color 0.3s ease;
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: #667eea;
-}
-
 .form-group textarea {
     height: 120px;
-    resize: vertical;
 }
 
 .submit-btn {
@@ -316,68 +232,12 @@ header {
     border: 1px solid #e9ecef;
 }
 
-.share-section {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 15px;
-    margin-bottom: 30px;
-    text-align: center;
-}
-
-.share-title {
-    font-size: 1.2rem;
-    color: #2c3e50;
-    margin-bottom: 15px;
-}
-
-.share-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.share-btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 25px;
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.share-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-.share-btn.facebook {
-    background: #3b5998;
-}
-
-.share-btn.twitter {
-    background: #1da1f2;
-}
-
-.share-btn.linkedin {
-    background: #0077b5;
-}
-
-.share-btn.email {
-    background: #34495e;
-}
-
 @media (max-width: 768px) {
-    .container {
-        padding: 15px;
-    }
-    
     .article-container,
-    .comments-section
+    .comments-section {
+        padding: 25px;
+        border-radius: 15px;
+    }
     
     .article-title {
         font-size: 2.2rem;
@@ -412,15 +272,16 @@ header {
         font-size: 1.8rem;
     }
     
-    .logo {
-        font-size: 2rem;
-    }
-    
     .article-content {
         font-size: 1rem;
     }
     
     .comments-title {
         font-size: 1.5rem;
+    }
+    
+    .article-container,
+    .comments-section {
+        padding: 20px;
     }
 }

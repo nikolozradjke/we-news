@@ -5,23 +5,20 @@ namespace App\Controller\Admin\Base;
 use App\Traits\CrudHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Knp\Component\Pager\PaginatorInterface;
 
 abstract class CrudController extends AdminBaseController
 {
     use CrudHelper;
 
-    protected function renderIndex(Request $request, callable $fetchPaginated, string $template): Response
+    protected function renderIndex(Request $request, callable $fetchPaginated, string $template, PaginatorInterface $paginator, $perPage = 10): Response
     {
-        $page = max(1, $request->query->getInt('page', 1));
-        $limit = 10;
-        $items = $fetchPaginated($page, $limit);
-        $totalItems = count($items);
-        $totalPages = ceil($totalItems / $limit);
-
         return $this->render($template, [
-            'items' => $items,
-            'currentPage' => $page,
-            'totalPages' => $totalPages,
+            'pagination' => $paginator->paginate(
+                $fetchPaginated(),
+                $request->query->getInt('page', 1),
+                $perPage
+            )
         ]);
     }
 }

@@ -27,7 +27,7 @@
                 </tr>
             </thead>
             <tbody>
-            {% for category in items %}
+            {% for category in pagination %}
                 <tr>
                     <td>{{ loop.index }}</td>
                     <td>{{ category.title }}</td>
@@ -46,22 +46,9 @@
             {% endfor %}
             </tbody>
         </table>
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                <li class="page-item {% if currentPage == 1 %}disabled{% endif %}">
-                    <a class="page-link" href="{{ path('category_index', {'page': currentPage - 1}) }}" tabindex="-1">Previous</a>
-                </li>
-                {% for page in 1..totalPages %}
-                    <li class="page-item {% if page == currentPage %}active{% endif %}">
-                        <a class="page-link" href="{{ path('category_index', {'page': page}) }}">{{ page }}</a>
-                    </li>
-                {% endfor %}
-                <li class="page-item {% if currentPage == totalPages %}disabled{% endif %}">
-                    <a class="page-link" href="{{ path('category_index', {'page': currentPage + 1}) }}">Next</a>
-                </li>
-            </ul>
-        </nav>
-
+        <div class="custom-pagination">
+            {{ knp_pagination_render(pagination) }}
+        </div>
     </div>
 
 {% endblock %}

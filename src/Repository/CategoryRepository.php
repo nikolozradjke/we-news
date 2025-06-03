@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\Category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * @extends ServiceEntityRepository<Category>
@@ -18,15 +17,12 @@ class CategoryRepository extends ServiceEntityRepository
         $this->conn = $this->getEntityManager()->getConnection();
     }
 
-    public function listPaginated(int $page = 1, int $limit = 10): Paginator
+    public function listPaginated()
     {
-        $query = $this->createQueryBuilder('c')
+        return $this->createQueryBuilder('c')
             ->orderBy('c.createdAt', 'DESC')
-            ->setFirstResult(($page - 1) * $limit)
-            ->setMaxResults($limit)
-            ->getQuery();
-
-        return new Paginator($query);
+            ->getQuery()
+            ->getResult();
     }
 
     /**

@@ -1,25 +1,20 @@
 {% extends 'layouts/public.html.twig' %}
 
 {% block title %}{{ news.title }}{% endblock %}
-{% block stylesheets %}<link rel="stylesheet" href="{{ asset('css/inner_news.css') }}">{% endblock %}
+{% block stylesheets %}<link rel="stylesheet" href="{{ asset('css/inner-news.css') }}">{% endblock %}
 
 {% block body %}
     <article class="article-container">
-            <!-- Article Header -->
             <header class="article-header">
                 <h1 class="article-title">{{ news.title }}</h1>
-                
-                <!-- Article Meta Information -->
                 <div class="article-meta">
                     <div class="meta-item">
-                        <strong>Published:</strong> {{ news.createdAt|date('F j, Y') }}
+                         {{ news.createdAt|date('F j, Y') }}
                     </div>
                 </div>
-
-                <!-- Category Buttons -->
                 <div class="category-buttons">
                     {% for category in categories %}
-                    <a href="" class="category-btn">{{ category.title }}</a>
+                    <a href="{{ path('app_public_category_news', {category: category.id}) }}" class="category-btn">{{ category.title }}</a>
                     {% endfor %}
                 </div>
             </header>

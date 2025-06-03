@@ -3,6 +3,8 @@
 namespace App\Controller\Public;
 
 use App\Dto\CommentDto;
+use App\Entity\Category;
+use App\Entity\News;
 use App\Form\CommentTypeForm;
 use App\Repository\NewsRepository;
 use App\Service\CommentService;
@@ -11,13 +13,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Knp\Component\Pager\PaginatorInterface;
 
 final class NewsController extends AbstractController
 {
     #[Route('/news/{id}', name: 'app_public_news')]
-    public function inner($id, NewsRepository $repo, Request $request, CommentService $commentService): Response
+    public function inner(News $news, Request $request, CommentService $commentService): Response
     {
-        $news = $repo->findWithCategories($id);
         if (!$news) {
             throw new NotFoundHttpException('News not found');
         }
@@ -52,6 +54,19 @@ final class NewsController extends AbstractController
             'categories' => $news->getCategories(),
             'comments' => $news->getComments(),
             'commentForm' => $form->createView()
+        ]);
+    }
+
+    #[Route('/{category}/news', name: 'app_public_category_news', methods: ['GET'])]
+    public function show(Category $category, Request $request, NewsRepository $newsRepository, PaginatorInterface $paginator): Response 
+    {
+        return $this->render('public/news/index.html.twig', [
+            'category' => $category,
+            'items' => $paginator->paginate(
+                $newsRepository->listPaginated($category),
+                $request->query->getInt('page', 1),
+                10
+            ),
         ]);
     }
 }
