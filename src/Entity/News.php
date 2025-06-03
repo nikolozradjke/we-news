@@ -39,9 +39,13 @@ class News
     #[ORM\Column(type: 'datetime_immutable')]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[ORM\OneToMany(mappedBy: 'news', targetEntity: Comment::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $comments;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int 
@@ -109,5 +113,10 @@ class News
     { 
         $this->categories->removeElement($category);
         return $this; 
+    }
+
+    public function getComments(): Collection
+    {
+        return $this->comments;
     }
 }
