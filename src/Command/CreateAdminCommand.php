@@ -4,7 +4,6 @@ namespace App\Command;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -12,12 +11,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Enum\UserRole;
 
-#[AsCommand(
-    name: 'app:create-admin',
-    description: 'Create an admin user',
-)]
 class CreateAdminCommand extends Command
 {
+    private const COMMAND_NAME = 'app:create-admin';
+    protected static $defaultName = 'app:create-admin';
+    protected static $defaultDescription = 'Create an admin user';
+
     private EntityManagerInterface $entityManager;
     private UserPasswordHasherInterface $passwordHasher;
 
@@ -25,7 +24,7 @@ class CreateAdminCommand extends Command
     {
         $this->entityManager = $entityManager;
         $this->passwordHasher = $passwordHasher;
-        parent::__construct();
+        parent::__construct(self::COMMAND_NAME);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -36,6 +35,8 @@ class CreateAdminCommand extends Command
         $user->setName('Admin User');
         $user->setEmail('admin@example.com');
         $user->setRole(UserRole::ADMIN);
+        $user->setCreatedAt(new \DateTimeImmutable());
+        $user->setUpdatedAt(new \DateTimeImmutable());
         
         $hashedPassword = $this->passwordHasher->hashPassword($user, 'admin!23');
         $user->setPassword($hashedPassword);

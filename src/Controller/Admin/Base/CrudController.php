@@ -6,8 +6,9 @@ use App\Traits\CrudHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-abstract class CrudController extends AdminBaseController
+abstract class CrudController extends AbstractController
 {
     use CrudHelper;
 

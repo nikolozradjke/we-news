@@ -20,7 +20,7 @@ trait CrudHelper
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $onValid(); // Save/create/update logic
+            $onValid();
             return new RedirectResponse($viewData['redirectTo'] ?? '/');
         }
 

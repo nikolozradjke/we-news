@@ -1,0 +1,19 @@
+app_public:
+    path: /
+    controller: App\Controller\Public\IndexController::index
+    methods: [GET]
+
+app_public_news:
+    path: /news/{id}
+    controller: App\Controller\Public\NewsController::inner
+    methods: [GET, POST]
+
+app_public_category_news:
+    path: /{category}/news
+    controller: App\Controller\Public\NewsController::show
+    methods: [GET]
+
+comment_delete:
+    path: /comment/delete/{id}
+    controller: App\Controller\Public\CommentController::index
+    methods: [DELETE]    

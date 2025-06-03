@@ -1,0 +1,29 @@
+App\Entity\User:
+    type: entity
+    table: user
+    repositoryClass: App\Repository\UserRepository
+    lifecycleCallbacks:
+        prePersist: [setCreatedAtValue]
+        preUpdate: [setUpdatedAtValue]
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: 255
+        email:
+            type: string
+            length: 180
+            unique: true
+        role:
+            type: string
+            enumType: App\Enum\UserRole
+        password:
+            type: string
+        createdAt:
+            type: datetime_immutable
+        updatedAt:
+            type: datetime_immutable

@@ -1,0 +1,44 @@
+app_dashboard:
+    path: /admin
+    controller: App\Controller\Admin\AdminController::dashboard
+    methods: [GET]
+
+news_index:
+    path: /admin/news/
+    controller: App\Controller\Admin\NewsController::index
+    methods: [GET]
+
+news_create:
+    path: /admin/news/create
+    controller: App\Controller\Admin\NewsController::create
+    methods: [GET, POST]
+
+news_edit:
+    path: /admin/news/edit/{news}
+    controller: App\Controller\Admin\NewsController::edit
+    methods: [GET, POST]
+
+news_delete:
+    path: /admin/news/delete/{news}
+    controller: App\Controller\Admin\NewsController::delete
+    methods: [POST]
+
+category_index:
+    path: /admin/categories/
+    controller: App\Controller\Admin\CategoryController::index
+    methods: [GET]
+
+category_create:
+    path: /admin/categories/create
+    controller: App\Controller\Admin\CategoryController::create
+    methods: [GET, POST]
+
+category_edit:
+    path: /admin/categories/edit/{category}
+    controller: App\Controller\Admin\CategoryController::edit
+    methods: [GET, POST]
+
+category_delete:
+    path: /admin/categories/delete/{category}
+    controller: App\Controller\Admin\CategoryController::delete
+    methods: [POST]    

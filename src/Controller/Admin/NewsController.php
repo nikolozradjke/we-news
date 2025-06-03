@@ -2,7 +2,6 @@
 
 namespace App\Controller\Admin;
 
-use App\Controller\Admin\Base\AdminBaseController;
 use App\Controller\Admin\Base\CrudController;
 use App\Dto\NewsDto;
 use App\Entity\News;
@@ -11,16 +10,13 @@ use App\Repository\NewsRepository;
 use App\Service\NewsService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 
-#[Route(AdminBaseController::PATH . '/news')]
 final class NewsController extends CrudController
 {
     private const ROUTE_PREFIX = 'news';
     private const TEMPLATE_DIR = 'dashboard/news';
 
-    #[Route('/', name: self::ROUTE_PREFIX . '_index')]
     public function index(NewsRepository $repo, Request $request, PaginatorInterface $paginator)
     {
         return $this->renderIndex(
@@ -32,7 +28,6 @@ final class NewsController extends CrudController
         );
     }
 
-    #[Route('/create', name: self::ROUTE_PREFIX . '_create')]
     public function create(Request $request, NewsService $service): Response
     {
         $dto = new NewsDto();
@@ -47,7 +42,6 @@ final class NewsController extends CrudController
         );
     }
 
-    #[Route('/edit/{news}', name: self::ROUTE_PREFIX . '_edit')]
     public function edit(News $news, Request $request, NewsService $service): Response
     {
         $dto = new NewsDto();
@@ -70,7 +64,6 @@ final class NewsController extends CrudController
         ]);
     }
 
-    #[Route('/delete/{news}', name: self::ROUTE_PREFIX . '_delete', methods: ['POST'])]
     public function delete(News $news, Request $request, NewsService $service): Response
     {
         return $this->handleDelete(

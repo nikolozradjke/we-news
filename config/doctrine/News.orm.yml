@@ -1,0 +1,48 @@
+App\Entity\News:
+    type: entity
+    table: news
+    repositoryClass: App\Repository\NewsRepository
+    lifecycleCallbacks:
+        prePersist: [setTimestamps]
+        preUpdate: [updateTimestamp]
+
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+
+        title:
+            type: string
+            length: 255
+
+        shortDescription:
+            type: text
+
+        content:
+            type: text
+
+        picture:
+            type: string
+            length: 255
+            nullable: true
+
+        createdAt:
+            type: datetime_immutable
+
+        updatedAt:
+            type: datetime_immutable
+
+    manyToMany:
+        categories:
+            targetEntity: App\Entity\Category
+            inversedBy: news
+            joinTable: ~
+
+    oneToMany:
+        comments:
+            targetEntity: App\Entity\Comment
+            mappedBy: news
+            orphanRemoval: true
+            cascade: [persist]
