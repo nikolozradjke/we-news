@@ -1,0 +1,25 @@
+{% extends 'layouts/public.html.twig' %}
+
+{% block title %}Hello Public/IndexController!{% endblock %}
+
+{% block body %}
+    <div class="categories-grid">
+        {% for category in categories %}
+        <section class="category-section">
+            <h2 class="category-title">{{ category.title }}</h2>
+            <div class="news-grid">
+                {% for news in category.latest_news %}
+                <article class="news-card">
+                    <img src="{{ asset(news.picture) }}" alt="{{ news.title }}">
+                    <div class="news-content">
+                        <h3 class="news-title">{{ news.title }}</h3>
+                        <p class="news-description">{{ news.short_description }}</p>
+                        <a href="#" class="read-more">Read More</a>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+        {% endfor %}
+    </div>
+{% endblock %}
