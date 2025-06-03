@@ -12,6 +12,7 @@ use App\Service\NewsService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route(AdminBaseController::PATH . '/news')]
 final class NewsController extends CrudController
@@ -20,12 +21,14 @@ final class NewsController extends CrudController
     private const TEMPLATE_DIR = 'dashboard/news';
 
     #[Route('/', name: self::ROUTE_PREFIX . '_index')]
-    public function index(NewsRepository $repo, Request $request)
+    public function index(NewsRepository $repo, Request $request, PaginatorInterface $paginator)
     {
         return $this->renderIndex(
             $request,
-            fn($page, $limit) => $repo->listPaginated($page, $limit),
-            self::TEMPLATE_DIR . '/index.html.twig'
+            fn() => $repo->listPaginated(),
+            self::TEMPLATE_DIR . '/index.html.twig',
+            $paginator,
+            $perPage = 10
         );
     }
 

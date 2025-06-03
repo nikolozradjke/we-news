@@ -1,19 +1,27 @@
 {% extends 'layouts/public.html.twig' %}
 
 {% block title %}HOME{% endblock %}
-{% block stylesheets %}<link rel="stylesheet" href="{{ asset('css/styles.css') }}">{% endblock %}
+{% block stylesheets %}<link rel="stylesheet" href="{{ asset('css/main-page.css') }}">{% endblock %}
 
 {% block body %}
     <div class="categories-grid">
         {% for category in categories %}
         <section class="category-section">
-            <h2 class="category-title">{{ category.title }}</h2>
+            <h2 class="category-title">
+                <a href="{{ path('app_public_category_news', {category: category.id}) }}">
+                    {{ category.title }}
+                </a>
+            </h2>
             <div class="news-grid">
                 {% for news in category.latest_news %}
                 <article class="news-card">
                     <img src="{{ asset(news.picture) }}" alt="{{ news.title }}">
                     <div class="news-content">
-                        <h3 class="news-title">{{ news.title }}</h3>
+                        <h3 class="news-title">
+                            <a href="{{ path('app_public_news', {id: news.id}) }}">
+                                {{ news.title }}
+                            </a>
+                        </h3>
                         <p class="news-description">{{ news.short_description }}</p>
                         <a href="{{ path('app_public_news', {id: news.id}) }}" class="read-more">Read More</a>
                     </div>
