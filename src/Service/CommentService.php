@@ -28,4 +28,12 @@ class CommentService
 
         return $comment;
     }
+
+    public function remove(Comment $comment)
+    {
+        $this->em->remove($comment);
+        $this->em->flush();
+
+        return true;
+    }
 }

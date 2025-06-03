@@ -57,3 +57,34 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('delete-comment-btn')) {
+        const commentId = e.target.dataset.id;
+
+        fetch(`/comment/delete/${commentId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                const commentDiv = e.target.closest('.comment');
+                if (commentDiv) {
+                    commentDiv.remove();
+                }
+
+                const commentsList = document.querySelector('.comments-list');
+                if (commentsList && commentsList.children.length === 0) {
+                    commentsList.innerHTML = `<div class="comment" id="no-comments">
+                    <p class="comment-text">No comments yet.</p>
+                </div>`;
+                }
+            } else {
+                console.error(data.message || 'Error deleting comment');
+            }
+        });
+    }
+});
