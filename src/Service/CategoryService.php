@@ -6,7 +6,6 @@ use App\Dto\CategoryDto;
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class CategoryService
 {

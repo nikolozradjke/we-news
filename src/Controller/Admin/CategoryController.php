@@ -13,13 +13,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CategoryRepository;
 use Knp\Component\Pager\PaginatorInterface;
 
-#[Route(AdminBaseController::PATH . '/categories')]
 final class CategoryController extends CrudController
 {
     private const ROUTE_PREFIX = 'category';
     private const TEMPLATE_DIR = 'dashboard/category';
     
-    #[Route('/', name: self::ROUTE_PREFIX . '_index')]
     public function index(Request $request, CategoryRepository $repo, PaginatorInterface $paginator)
     {
         return $this->renderIndex(
@@ -31,7 +29,6 @@ final class CategoryController extends CrudController
         );
     }
 
-    #[Route('/create', name: self::ROUTE_PREFIX . '_create')]
     public function create(Request $request, CategoryService $service)
     {
         $dto = new CategoryDto();
@@ -46,7 +43,6 @@ final class CategoryController extends CrudController
         );
     }
 
-    #[Route('/edit/{category}', name: self::ROUTE_PREFIX . '_edit')]
     public function edit(Category $category, Request $request, CategoryService $service)
     {
         $dto = new CategoryDto();
@@ -64,7 +60,6 @@ final class CategoryController extends CrudController
         );
     }
 
-    #[Route('/delete/{category}', name: self::ROUTE_PREFIX . '_delete', methods: ['POST'])]
     public function delete(Category $category, Request $request, CategoryService $service)
     {
         return $this->handleDelete(

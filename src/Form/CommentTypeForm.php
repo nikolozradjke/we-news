@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class CommentTypeForm extends AbstractType
 {
@@ -21,6 +22,10 @@ class CommentTypeForm extends AbstractType
                     'placeholder' => 'Your Name',
                     'id' => 'name',
                 ],
+                'constraints' => [
+                    new Assert\NotBlank(message: 'Name is required.'),
+                    new Assert\Length(max: 255, maxMessage: 'Name cannot exceed {{ limit }} characters.'),
+                ],
             ])
             ->add('email', EmailType::class, [
                 'label' => false,
@@ -28,12 +33,19 @@ class CommentTypeForm extends AbstractType
                     'placeholder' => 'Your Email',
                     'id' => 'email',
                 ],
+                'constraints' => [
+                    new Assert\NotBlank(message: 'Email is required.'),
+                    new Assert\Email(message: 'Please enter a valid email address.'),
+                ],
             ])
             ->add('content', TextareaType::class, [
                 'label' => false,
                 'attr' => [
                     'placeholder' => 'Share your thoughts...',
                     'id' => 'comment',
+                ],
+                'constraints' => [
+                    new Assert\NotBlank(message: 'Content cannot be empty.'),
                 ],
             ]);
     }

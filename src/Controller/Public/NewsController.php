@@ -17,7 +17,6 @@ use Knp\Component\Pager\PaginatorInterface;
 
 final class NewsController extends AbstractController
 {
-    #[Route('/news/{id}', name: 'app_public_news')]
     public function inner(News $news, Request $request, CommentService $commentService): Response
     {
         if (!$news) {
@@ -57,7 +56,6 @@ final class NewsController extends AbstractController
         ]);
     }
 
-    #[Route('/{category}/news', name: 'app_public_category_news', methods: ['GET'])]
     public function show(Category $category, Request $request, NewsRepository $newsRepository, PaginatorInterface $paginator): Response 
     {
         return $this->render('public/news/index.html.twig', [

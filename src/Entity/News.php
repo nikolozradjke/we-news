@@ -2,44 +2,30 @@
 
 namespace App\Entity;
 
-use App\Repository\NewsRepository;
 use App\Traits\Timestamps;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: NewsRepository::class)]
 class News
 {
     use Timestamps;
 
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
     private string $title;
 
-    #[ORM\Column(type: 'text')]
     private string $shortDescription;
 
-    #[ORM\Column(type: 'text')]
     private string $content;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $picture = null;
 
-    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'news')]
     private Collection $categories;
 
-    #[ORM\Column(type: 'datetime_immutable')]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column(type: 'datetime_immutable')]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'news', targetEntity: Comment::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $comments;
 
     public function __construct()
@@ -118,5 +104,17 @@ class News
     public function getComments(): Collection
     {
         return $this->comments;
+    }
+
+    public function setTimestamps(): void
+    {
+        $now = new \DateTimeImmutable();
+        $this->createdAt = $now;
+        $this->updatedAt = $now;
+    }
+
+    public function updateTimestamp(): void
+    {
+        $this->updatedAt = new \DateTimeImmutable();
     }
 }

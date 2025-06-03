@@ -1,0 +1,29 @@
+App\Entity\Category:
+    type: entity
+    table: category
+    repositoryClass: App\Repository\CategoryRepository
+    lifecycleCallbacks:
+        prePersist: [setTimestamps]
+        preUpdate: [updateTimestamp]
+
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+
+        title:
+            type: string
+            length: 255
+
+        createdAt:
+            type: datetime_immutable
+
+        updatedAt:
+            type: datetime_immutable
+
+    manyToMany:
+        news:
+            targetEntity: App\Entity\News
+            mappedBy: categories
