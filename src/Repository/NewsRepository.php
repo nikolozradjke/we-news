@@ -31,5 +31,18 @@ class NewsRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function getTopMostCommentedNews(): array
+    {
+        return $this->createQueryBuilder('n')
+            ->select('n', 'COUNT(c.id) as commentCount')
+            ->leftJoin('n.comments', 'c')
+            ->groupBy('n.id')
+            ->orderBy('commentCount', 'DESC')
+            ->addOrderBy('n.createdAt', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
     
 }
